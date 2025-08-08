@@ -73,12 +73,29 @@ function filterMovies(query) {
 
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
+const desktopToggle = document.getElementById("desktop-view-toggle");
 
 if (searchInput && searchButton) {
   
   searchInput.addEventListener("input", (e) => filterMovies(e.target.value));
 
   searchButton.addEventListener("click", () => filterMovies(searchInput.value));
+}
+
+// Desktop View toggle (forces desktop-like styling on phones)
+if (desktopToggle) {
+  const key = 'forceDesktopView';
+  function applyState() {
+    const on = localStorage.getItem(key) === 'true';
+    document.body.classList.toggle('force-desktop', on);
+    desktopToggle.setAttribute('aria-pressed', String(on));
+  }
+  desktopToggle.addEventListener('click', () => {
+    const next = !(localStorage.getItem(key) === 'true');
+    localStorage.setItem(key, String(next));
+    applyState();
+  });
+  applyState();
 }
 
 
