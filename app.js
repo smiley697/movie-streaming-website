@@ -1,5 +1,6 @@
 const arrows = document.querySelectorAll(".arrow");
 const arrowLefts = document.querySelectorAll(".arrow-left");
+// Select all lists, not just the first one
 const movieLists = document.querySelectorAll(".movie-list");
 
 // Right arrow functionality
@@ -10,9 +11,11 @@ arrows.forEach((arrow, i) => {
     const ratio = Math.floor(window.innerWidth / 270);
     clickCounter++;
     if (itemNumber - (4 + clickCounter) + (4 - ratio) >= 0) {
-      movieLists[i].style.transform = `translateX(${
-        movieLists[i].computedStyleMap().get("transform")[0].x.value - 300
-      }px)`;
+      const computed = movieLists[i].computedStyleMap && movieLists[i].computedStyleMap();
+      const currentX = computed && computed.get("transform") && computed.get("transform")[0]
+        ? computed.get("transform")[0].x.value
+        : parseFloat((movieLists[i].style.transform.match(/-?\d+(?:\.\d+)?/g) || ["0"])[0]);
+      movieLists[i].style.transform = `translateX(${currentX - 300}px)`;
     } else {
       movieLists[i].style.transform = "translateX(0)";
       clickCounter = 0;
@@ -24,7 +27,10 @@ arrows.forEach((arrow, i) => {
 arrowLefts.forEach((arrowLeft, i) => {
   let clickCounter = 0;
   arrowLeft.addEventListener("click", () => {
-    const currentTransform = movieLists[i].computedStyleMap().get("transform")[0].x.value;
+    const computed = movieLists[i].computedStyleMap && movieLists[i].computedStyleMap();
+    const currentTransform = computed && computed.get("transform") && computed.get("transform")[0]
+      ? computed.get("transform")[0].x.value
+      : parseFloat((movieLists[i].style.transform.match(/-?\d+(?:\.\d+)?/g) || ["0"])[0]);
     if (currentTransform < 0) {
       movieLists[i].style.transform = `translateX(${currentTransform + 300}px)`;
       clickCounter--;
