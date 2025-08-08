@@ -39,13 +39,18 @@
             <div class="profile-container">
                 <img class="profile-picture" src="img/profile.jpg" alt="">
                 <div class="profile-text-container">
-                    <span class="profile-text">Profile</span>
+                    <span class="profile-text" id="profile-label">Profile</span>
                     <i class="fas fa-caret-down"></i>
                 </div>
                 <div class="toggle">
                     <i class="fas fa-moon toggle-icon"></i>
                     <i class="fas fa-sun toggle-icon"></i>
                     <div class="toggle-ball"></div>
+                </div>
+                <div class="profile-dropdown" id="profile-dropdown">
+                    <!-- JS populates based on auth state -->
+                    <button class="dropdown-item" id="open-auth">Sign In / Sign Up</button>
+                    <button class="dropdown-item" id="logout-btn" style="display:none;">Log Out</button>
                 </div>
             </div>
         </div>
@@ -319,6 +324,49 @@
                     <i class="fas fa-chevron-left arrow-left"></i>
                     <i class="fas fa-chevron-right arrow"></i>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal hidden" aria-hidden="true" role="dialog" aria-labelledby="auth-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="auth-title">Welcome</h2>
+                <button class="modal-close" id="auth-close" aria-label="Close">×</button>
+            </div>
+            <div class="tabs">
+                <button class="tab-button active" data-tab="login">Log In</button>
+                <button class="tab-button" data-tab="signup">Sign Up</button>
+            </div>
+            <div class="tab-panel" id="tab-login">
+                <form id="login-form">
+                    <label>
+                        Username
+                        <input type="text" id="login-username" required />
+                    </label>
+                    <label>
+                        Password
+                        <input type="password" id="login-password" required />
+                    </label>
+                    <button type="submit" class="primary">Log In</button>
+                </form>
+            </div>
+            <div class="tab-panel hidden" id="tab-signup">
+                <form id="signup-form">
+                    <label>
+                        Username
+                        <input type="text" id="signup-username" required />
+                    </label>
+                    <label>
+                        Password
+                        <input type="password" id="signup-password" required minlength="4" />
+                    </label>
+                    <button type="submit" class="primary">Create Account</button>
+                </form>
+            </div>
+            <div class="hint">
+                Demo accounts:
+                <code>demo / demo123</code>, <code>admin / admin123</code>
             </div>
         </div>
     </div>

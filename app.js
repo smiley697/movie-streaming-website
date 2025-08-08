@@ -89,3 +89,149 @@ if (homeIcon) {
     window.location.reload();
   });
 }
+
+// ========== Simple Auth (localStorage) ==========
+const profileText = document.getElementById('profile-label');
+const profileDropdown = document.getElementById('profile-dropdown');
+const openAuthBtn = document.getElementById('open-auth');
+const logoutBtn = document.getElementById('logout-btn');
+const authModal = document.getElementById('auth-modal');
+const authClose = document.getElementById('auth-close');
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabLogin = document.getElementById('tab-login');
+const tabSignup = document.getElementById('tab-signup');
+
+// Seed demo users once
+function seedDemoUsers() {
+  const exists = localStorage.getItem('users');
+  if (exists) return;
+  const users = {
+    demo: { username: 'demo', password: 'demo123' },
+    admin: { username: 'admin', password: 'admin123' }
+  };
+  localStorage.setItem('users', JSON.stringify(users));
+}
+
+function getUsers() {
+  return JSON.parse(localStorage.getItem('users') || '{}');
+}
+
+function setUsers(users) {
+  localStorage.setItem('users', JSON.stringify(users));
+}
+
+function getCurrentUser() {
+  return localStorage.getItem('currentUser');
+}
+
+function setCurrentUser(username) {
+  if (username) localStorage.setItem('currentUser', username);
+  else localStorage.removeItem('currentUser');
+}
+
+function updateProfileUI() {
+  const user = getCurrentUser();
+  if (profileText) profileText.textContent = user ? user : 'Profile';
+  if (openAuthBtn) openAuthBtn.style.display = user ? 'none' : 'block';
+  if (logoutBtn) logoutBtn.style.display = user ? 'block' : 'none';
+}
+
+seedDemoUsers();
+updateProfileUI();
+
+// Toggle dropdown
+const profileTextContainer = document.querySelector('.profile-text-container');
+if (profileTextContainer && profileDropdown) {
+  profileTextContainer.addEventListener('click', () => {
+    profileDropdown.classList.toggle('show');
+  });
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.profile-container')) {
+    if (profileDropdown) profileDropdown.classList.remove('show');
+  }
+});
+
+// Open auth modal
+if (openAuthBtn && authModal) {
+  openAuthBtn.addEventListener('click', () => {
+    profileDropdown.classList.remove('show');
+    authModal.classList.remove('hidden');
+    authModal.setAttribute('aria-hidden', 'false');
+  });
+}
+
+// Close auth modal
+if (authClose && authModal) {
+  authClose.addEventListener('click', () => {
+    authModal.classList.add('hidden');
+    authModal.setAttribute('aria-hidden', 'true');
+  });
+}
+
+// Tabs
+tabButtons.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    tabButtons.forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    if (tab === 'login') {
+      tabLogin.classList.remove('hidden');
+      tabSignup.classList.add('hidden');
+    } else {
+      tabSignup.classList.remove('hidden');
+      tabLogin.classList.add('hidden');
+    }
+  });
+});
+
+// Handle login
+const loginForm = document.getElementById('login-form');
+if (loginForm) {
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const username = document.getElementById('login-username').value.trim();
+    const password = document.getElementById('login-password').value;
+    const users = getUsers();
+    if (users[username] && users[username].password === password) {
+      setCurrentUser(username);
+      updateProfileUI();
+      authModal.classList.add('hidden');
+      authModal.setAttribute('aria-hidden', 'true');
+      alert('Logged in as ' + username);
+    } else {
+      alert('Invalid credentials');
+    }
+  });
+}
+
+// Handle signup
+const signupForm = document.getElementById('signup-form');
+if (signupForm) {
+  signupForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const username = document.getElementById('signup-username').value.trim();
+    const password = document.getElementById('signup-password').value;
+    if (!username || !password) return alert('Enter username and password');
+    const users = getUsers();
+    if (users[username]) return alert('Username already exists');
+    users[username] = { username, password };
+    setUsers(users);
+    setCurrentUser(username);
+    updateProfileUI();
+    authModal.classList.add('hidden');
+    authModal.setAttribute('aria-hidden', 'true');
+    alert('Account created. Signed in as ' + username);
+  });
+}
+
+// Logout
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    setCurrentUser(null);
+    updateProfileUI();
+    profileDropdown.classList.remove('show');
+  });
+}
