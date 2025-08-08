@@ -54,3 +54,38 @@ ball.addEventListener("click", () => {
   });
   ball.classList.toggle("active");
 });
+
+
+function normalize(text) {
+  return (text || "").toString().trim().toLowerCase();
+}
+
+function filterMovies(query) {
+  const q = normalize(query);
+  const items = document.querySelectorAll(".movie-list-item");
+  items.forEach((item) => {
+    const titleEl = item.querySelector(".movie-list-item-title");
+    const title = normalize(titleEl ? titleEl.textContent : item.getAttribute("data-title"));
+    const match = q === "" || title.includes(q);
+    item.style.display = match ? "block" : "none";
+  });
+}
+
+const searchInput = document.getElementById("search-input");
+const searchButton = document.getElementById("search-button");
+
+if (searchInput && searchButton) {
+  
+  searchInput.addEventListener("input", (e) => filterMovies(e.target.value));
+
+  searchButton.addEventListener("click", () => filterMovies(searchInput.value));
+}
+
+
+const homeIcon = document.querySelector('.left-menu-icon.fa-home');
+if (homeIcon) {
+  homeIcon.setAttribute('title', 'Home');
+  homeIcon.addEventListener('click', () => {
+    window.location.reload();
+  });
+}
