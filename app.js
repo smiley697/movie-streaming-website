@@ -160,6 +160,7 @@ if (openAuthBtn && authModal) {
     profileDropdown.classList.remove('show');
     authModal.classList.remove('hidden');
     authModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
   });
 }
 
@@ -168,6 +169,7 @@ if (authClose && authModal) {
   authClose.addEventListener('click', () => {
     authModal.classList.add('hidden');
     authModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
   });
 }
 
@@ -200,6 +202,7 @@ if (loginForm) {
       updateProfileUI();
       authModal.classList.add('hidden');
       authModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
       alert('Logged in as ' + username);
     } else {
       alert('Invalid credentials');
@@ -223,6 +226,7 @@ if (signupForm) {
     updateProfileUI();
     authModal.classList.add('hidden');
     authModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
     alert('Account created. Signed in as ' + username);
   });
 }

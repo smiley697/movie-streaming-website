@@ -89,6 +89,7 @@ body {
 
 .profile-text-container {
   margin: 0 20px;
+  cursor: pointer;
 }
 
 .profile-picture {
@@ -438,6 +439,16 @@ body {
 }
 
 .hint { color: #aaa; font-size: 12px; margin-top: 8px; }
+
+/* When modal is open, disable background clicks and scroll */
+body.modal-open {
+  overflow: hidden;
+}
+body.modal-open .container,
+body.modal-open .navbar,
+body.modal-open .sidebar {
+  pointer-events: none;
+}
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .navbar-container {
