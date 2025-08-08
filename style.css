@@ -67,15 +67,7 @@ body {
   cursor: pointer;
 }
 
-.desktop-toggle {
-  height: 30px;
-  padding: 0 10px;
-  border-radius: 6px;
-  border: 1px solid #444;
-  background: #1f1f1f;
-  color: #fff;
-  cursor: pointer;
-}
+/* desktop toggle removed */
 
 .menu-list {
   display: flex;
@@ -509,14 +501,3 @@ body.modal-open .sidebar {
   }
 }
 
-/* Force desktop view (optional toggle) */
-/* marker class; overrides are defined below */
-body.force-desktop .menu-container { display: block; }
-@media (max-width: 768px) {
-  body.force-desktop .navbar-container { padding: 0 50px; }
-  body.force-desktop .content-container { margin-left: 50px; }
-  body.force-desktop .featured-content { height: 90vh; padding-left: 50px; }
-  body.force-desktop .featured-desc { max-width: 700px; font-size: 18px; }
-  body.force-desktop .movie-list-item-img { width: 270px; height: 200px; }
-  body.force-desktop .arrow, body.force-desktop .arrow-left { font-size: 120px; top: 90px; transform: none; }
-}
